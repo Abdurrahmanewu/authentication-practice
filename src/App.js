@@ -43,6 +43,7 @@ function App() {
       <img src={user.photoURL} alt="" />
       <br />
       <button onClick={handleSignOut}>SignOut</button>
+
     </div>
   );
 }
