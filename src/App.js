@@ -1,49 +1,26 @@
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
-import app from "./firebase/firebase";
-import { useState } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Main from "./Layout/Main";
+import Home from "./Components/Home/Home";
+import Register from "./Components/Register/Register";
+import Login from "./Components/Login/Login";
+import Orders from "./Components/Orders/Orders";
 
 function App() {
-  const [user, setUser] = useState({});
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  const handleGoogleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        setUser(user);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
-  };
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("signOut");
-        setUser({});
-      })
-      .catch(() => {
-        console.log("signOut with error");
-        setUser({});
-      });
-  };
-
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Main></Main>,
+      children: [
+        { path: "/", element: <Home></Home> },
+        { path: "/register", element: <Register></Register> },
+        { path: "/login", element: <Login></Login> },
+        { path: "/orders", element: <Orders></Orders> },
+      ],
+    },
+  ]);
   return (
-    <div className="App">
-      <h1>hello auth</h1>
-      <button onClick={handleGoogleSignIn}>google signIn</button>
-      <p>User details:{user.displayName} </p>
-      <img src={user.photoURL} alt="" />
-      <br />
-      <button onClick={handleSignOut}>SignOut</button>
-
+    <div>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
